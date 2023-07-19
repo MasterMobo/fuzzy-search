@@ -61,6 +61,7 @@ public class Levenshtein {
         int m = b.length();
         int[] prev = new int[m + 1];
         int[] current = new int[m + 1];
+        int[] dummy = prev;     // variable for swapping prev and current
 
         for (int i = 0; i <= m; i++) {
             prev[i] = i;
@@ -77,7 +78,9 @@ public class Levenshtein {
                 current[j] = min(add, diff, sub);
             }
 
-            prev = current.clone();
+            prev = current;
+            current = dummy;
+            dummy = prev;
         }
 
         return prev[m];
