@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 
 public class BKTree {
     public Node root;
@@ -36,23 +38,20 @@ public class BKTree {
         }
     }
 
-    private void search(String s, int tol, ArrayList<String> res, Node node) {
+    private void search(String s, int tol, ArrayList<String> res, Node node, HashMap<String, Integer> map) {
         int dist = Levenshtein.dist(s, node.val);
 
-        if (dist <= tol) res.add(node.val);
+        if (dist <= tol) {
+            res.add(node.val);
+            map.put(node.val, dist);
+        }
 
-//        for (int i = 1; i <= tol; i++) {
-//            if (node.exists(i)) {
-//                search(s, tol, res, node.get(i));
-//            }
-//        }
-        // TODO: Figure this shit out!!
         int i = dist-tol;
         if(i<0) i=1;
 
         while(i <= dist + tol){
             if (node.exists(i)) {
-                search(s, tol, res, node.get(i));
+                search(s, tol, res, node.get(i), map);
             }
             i++;
         }
@@ -60,7 +59,27 @@ public class BKTree {
 
     public ArrayList<String> search(String s, int tol) {
         ArrayList<String> res = new ArrayList<>();
-        search(s, tol, res, root);
+        HashMap<String, Integer> map = new HashMap<>(); // Maps path to levenshtein distance (to be sorted by distance)
+
+        search(s, tol, res, root, map);
+        res.sort(Comparator.comparing(map::get));
+
         return res;
+    }
+
+    public ArrayList<String> search(String s, int tol, int limit) {
+        ArrayList<String> res = new ArrayList<>(); // Stores unsorted result
+        HashMap<String, Integer> map = new HashMap<>(); // Maps path to levenshtein distance (to be sorted by distance)
+
+        search(s, tol, res, root, map);
+        res.sort(Comparator.comparing(map::get));
+
+        if (res.size() <= limit) return res;
+
+        ArrayList<String> sliced = new ArrayList<>(limit);
+        for (int i = 0; i < limit; i++) {
+            sliced.add(res.get(i));
+        }
+        return sliced;
     }
 }

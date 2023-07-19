@@ -19,6 +19,11 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println(tree.search("ass", 2));
+        while (true) {
+            System.out.print("Search for: ");
+            Scanner scanner = new Scanner(System.in);
+            String s = scanner.nextLine();
+            System.out.println(tree.search(s, 5, 20));
+        }
     }
 }
