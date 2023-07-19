@@ -23,6 +23,8 @@ public class Main {
             System.out.print("Search for: ");
             Scanner scanner = new Scanner(System.in);
             String s = scanner.nextLine().toLowerCase();
+            if (s.equals("!q")) break;
+
             System.out.println(tree.search(s, 5, 20));
         }
     }
