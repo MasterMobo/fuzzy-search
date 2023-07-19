@@ -9,7 +9,7 @@ public class Main {
             File file = new File("./src/words.txt");
             Scanner reader = new Scanner(file);
             while (reader.hasNextLine()) {
-                String data = reader.nextLine();
+                String data = reader.nextLine().toLowerCase();
                 tree.insert(data);
             }
             reader.close();
@@ -22,7 +22,7 @@ public class Main {
         while (true) {
             System.out.print("Search for: ");
             Scanner scanner = new Scanner(System.in);
-            String s = scanner.nextLine();
+            String s = scanner.nextLine().toLowerCase();
             System.out.println(tree.search(s, 5, 20));
         }
     }
